@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>T2FIT Schedule</title>
+<meta name="description" content="Build the T2FIT gym schedule boards and export them as images for the screen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/board.css">
+<link rel="stylesheet" href="./css/editor.css">
+</head>
+<body>
+
+<!-- full screen output, used for checking and for screenshots -->
+<div id="tv"><div class="stage" id="tvStage"><div class="board" id="tvBoard"></div></div></div>
+
+<div id="editor">
+  <div class="bar">
+    <h1>T2FIT SCHEDULE</h1>
+    <input type="file" id="fileInput" accept="application/json" hidden>
+    <button class="btn" id="btnOpen">Open a file</button>
+    <button class="btn" id="btnSave">Save a copy</button>
+    <button class="btn" id="btnDisplay">Show on screen</button>
+    <button class="btn" id="btnPng">Download image</button>
+    <button class="btn primary" id="btnPngAll">Download all images</button>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h2>This week</h2>
+        <label class="fld" for="focus">Focus of the week</label>
+        <input type="text" id="focus" placeholder="e.g. UPPER - WEEK 7">
+        <p class="note">Appears on every board until you change it.</p>
+      </div>
+
+      <div class="card">
+        <h2>Boards</h2>
+        <div class="boards" id="boards"></div>
+        <label class="fld" for="bname">Name of this board</label>
+        <input type="text" id="bname" placeholder="e.g. MORNING">
+        <p class="note" id="bnameNote"></p>
+      </div>
+
+      <div class="warn hide" id="warn"></div>
+
+      <div class="card">
+        <h2>Sessions on this board</h2>
+        <div id="sessions"></div>
+        <button class="btn primary" id="btnAdd">Add a session</button>
+        <p class="note">Sessions sort themselves by time. AM and PM are worked out from the time you
+          enter, so type 18:30 for a half six evening class.</p>
+      </div>
+
+      <details class="card" id="settings">
+        <summary>Settings</summary>
+        <div class="setbody">
+          <label class="fld" for="coaches">Coaches</label>
+          <textarea id="coaches" style="min-height:110px" placeholder="BEN&#10;JT&#10;GEM&#10;SAM"></textarea>
+          <p class="note" id="coachNote"></p>
+
+          <label class="fld" for="wxplace">Weather location</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="wxplace" placeholder="e.g. Coulsdon">
+            <button class="btn" id="wxlook" style="flex:0 0 auto">Look up</button>
+          </div>
+          <label style="display:flex;gap:9px;align-items:center;margin-top:10px;font-weight:600;font-size:15px;color:#5A6C7A;cursor:pointer">
+            <input type="checkbox" id="wxon" style="width:auto;margin:0"> Show weather on the board
+          </label>
+          <p class="note" id="wxNote"></p>
+
+          <label class="fld" for="site">Gym location</label>
+          <input type="text" id="site" placeholder="e.g. COULSDON">
+
+          <label class="fld" for="foot">Message along the bottom</label>
+          <input type="text" id="foot" placeholder="e.g. PLEASE ARRIVE 5 MINUTES EARLY">
+
+          <label class="fld" for="expw">Image size</label>
+          <select id="expw">
+            <option value="1080">Full HD, 1080 &#215; 1920</option>
+            <option value="1440">Quad HD, 1440 &#215; 2560</option>
+            <option value="2160">4K, 2160 &#215; 3840</option>
+            <option value="custom">Custom width&#8230;</option>
+          </select>
+
+          <div id="customWrap" class="hidden" style="margin-top:12px">
+            <label class="fld" for="expc">Width in pixels</label>
+            <input type="number" id="expc" min="720" max="3840" step="20">
+          </div>
+
+          <p class="note" id="expNote"></p>
+
+          <p class="note" style="margin-top:22px">
+            Your work is kept in this browser on this device, so it survives a refresh.
+            Use <strong>Save a copy</strong> to move it to another machine.
+          </p>
+          <button class="btn ghost" id="btnReset" style="margin-top:8px;padding-left:0">Start again from the example</button>
+        </div>
+      </details>
+
+    </div>
+
+    <div class="preview-wrap">
+      <div class="preview" id="preview"><div class="stage"><div class="board" id="pvBoard"></div></div></div>
+      <p class="pnote">Live preview of the board selected above. This is exactly what the image will look like.</p>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./js/app.js"></script>
+</body>
+</html>
