@@ -430,13 +430,46 @@ $("btnReset").onclick = () => {
   drawSettings(); drawEditor(); refreshWeather();
 };
 
+/* Full screen output.
+
+   display-mode and the browser's own full screen state have to move
+   together. Leaving full screen by any route has to bring the editor back,
+   or the board keeps filling the window with nothing to click. */
+let idleTimer = null;
+
+const inDisplay = () => document.body.classList.contains("display-mode");
+
+/* Show the way out, then let it fade so the wall stays clean. */
+function wakeExit(){
+  document.body.classList.remove("tv-idle");
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => { if(inDisplay()) document.body.classList.add("tv-idle"); }, 2600);
+}
+
+function exitDisplay(){
+  clearTimeout(idleTimer);
+  document.body.classList.remove("display-mode", "tv-idle");
+  if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+}
+
 $("btnDisplay").onclick = () => {
   document.body.classList.add("display-mode");
   renderBoard($("tvBoard"), DATA, cur(), WX);
   fitTv();
+  wakeExit();
   if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
 };
-addEventListener("keydown", e => { if(e.key === "Escape") document.body.classList.remove("display-mode"); });
+
+$("tvExit").onclick = exitDisplay;
+addEventListener("keydown", e => { if(e.key === "Escape" && inDisplay()) exitDisplay(); });
+
+/* Escape inside full screen is taken by the browser to leave full screen,
+   so the handler above never sees it. Full screen can also be dropped from
+   F11 or the browser's own control. Either way, come back to the editor. */
+document.addEventListener("fullscreenchange", () => { if(!document.fullscreenElement && inDisplay()) exitDisplay(); });
+
+for(const ev of ["mousemove", "pointerdown", "keydown"])
+  addEventListener(ev, () => { if(inDisplay()) wakeExit(); }, { passive: true });
 
 /* ---------- boot ---------- */
 addEventListener("resize", () => { fitTv(); fitPreview(); });

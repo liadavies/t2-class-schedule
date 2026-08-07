@@ -6,6 +6,19 @@ body.display-mode{background:#000;overflow:hidden}
 body.display-mode #editor{display:none}
 body.display-mode #tv{display:block}
 #tv{display:none;position:fixed;inset:0;overflow:hidden}
+
+/* The way out of full screen. It fades once the board is left alone, so a
+   board on the gym wall does not carry a button across it, and comes back
+   on any movement or tap. Never part of the exported image: the PNG is
+   built from boardHtml(), not from this overlay. */
+.tv-exit{position:fixed;top:20px;right:20px;z-index:2;display:flex;align-items:center;gap:9px;
+  appearance:none;border:0;border-radius:9px;padding:11px 16px;cursor:pointer;
+  font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;
+  background:rgba(20,30,40,.78);color:#fff;transition:opacity .45s}
+.tv-exit span{font-size:12px;letter-spacing:.5px;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,.16)}
+.tv-exit:hover{background:rgba(44,62,76,.92)}
+.tv-exit:focus-visible{outline:3px solid #FFC46B;outline-offset:2px}
+body.tv-idle .tv-exit{opacity:0;pointer-events:none}
 #editor{max-width:1180px;margin:0 auto;padding:0 16px 120px}
 
 .bar{position:sticky;top:0;z-index:20;background:#16232E;color:#fff;margin:0 -16px 20px;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
