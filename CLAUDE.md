@@ -70,3 +70,12 @@ Where it hooks in:
 1. Load a board from a server instead of `localStorage`, so several coaches
    share one schedule. `js/storage.js` is the only file that should change.
 2. Pull rosters from Mindbody into the same data shape. See README.
+3. Merge "Open a file" and "Save a copy" into one Open/Save button with a
+   popup that explains what each does, for a coach who has never seen the
+   toolbar before. Today they are two separate, unexplained handlers in
+   `js/app.js`: `btnSave` calls `exportJson(DATA)` from `js/export.js`
+   straight off, no confirmation; `btnOpen` just clicks the hidden
+   `fileInput`, whose `onchange` parses the JSON and falls back to
+   `alert("That file doesn't look like a T2FIT schedule.")` on a bad file.
+   The popup is new UI, not a rewrite of that logic; keep the two existing
+   handlers and call them from whichever option the coach picks.
