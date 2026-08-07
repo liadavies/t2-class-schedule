@@ -8,6 +8,20 @@ A static site that builds gym schedule boards and exports them as PNGs for a
 TV on the wall. No build step, no dependencies, no framework. Keep it that
 way unless there is a real reason not to.
 
+## Status
+
+As of 2026-08-07: live at https://t2-class-schedule.pages.dev, redeployed
+automatically from `main` on every push. Source at
+https://github.com/liadavies/t2-class-schedule.
+
+Completed so far: git set up and pushed; Cloudflare Pages configured; the
+board's T2FIT text replaced with the logo image, inlined as base64 in
+`css/board.css` so the PNG export still carries it; "Show on screen" given a
+working way out (button, Escape and the browser's own fullscreen exit all
+return to the editor); the Settings panel signposted with a toolbar button
+and a restyled, subtitled summary, so a coach with no familiarity with the
+app can find where the gym gets configured.
+
 ## Rules
 
 - **Never shrink the board's font sizes to make content fit.** Names are
@@ -33,9 +47,26 @@ way unless there is a real reason not to.
   means the class is shown by name with no roster, for large classes like
   Hybrid and Functional Strength.
 
+## Next up
+
+Today or Tomorrow, not a full date picker. The use case is prepping boards
+the night before for the next day, so a two-way toggle is enough; do not
+build a calendar for this.
+
+Where it hooks in:
+- `boardHtml()` and `renderBoard()` in `js/board.js` already take an
+  optional `now`, defaulting to `new Date()`, used only for `headerDate()`
+  in `js/util.js`. That is where "tomorrow" would flow in.
+- `js/export.js`'s `pngBlob()` calls `boardHtml()` without passing `now`, so
+  exports always use the real date regardless of what the preview shows.
+  That needs wiring through too, or a "Tomorrow" board would export with
+  today's date on it.
+- `js/weather.js` requests `forecast_days=1`, today's high only. Whether a
+  "Tomorrow" board shows tomorrow's forecast, or hides weather, is an open
+  product question, not decided yet.
+
 ## Good next tasks
 
 1. Load a board from a server instead of `localStorage`, so several coaches
    share one schedule. `js/storage.js` is the only file that should change.
 2. Pull rosters from Mindbody into the same data shape. See README.
-3. A day picker, so boards can be prepared ahead rather than only for today.

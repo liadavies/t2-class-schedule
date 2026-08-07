@@ -6,6 +6,11 @@ as images. Replaces the Canva template where names were positioned by hand.
 A coach fills in sessions, coaches and members, then downloads a PNG per
 board and puts it on the TV. Nothing is ever aligned manually.
 
+## Live
+
+https://t2-class-schedule.pages.dev, redeployed automatically on every push
+to `main`. Source at https://github.com/liadavies/t2-class-schedule.
+
 ## Running it locally
 
 The app uses ES modules and fetches its own stylesheet during export, so it
@@ -75,6 +80,20 @@ from character counts for that reason.
 **Weather and export both need the network.** Both fail quietly: no weather
 element, or an alert offering a smaller size. The board must never show its
 own plumbing on the wall.
+
+**Images on the board have to be inlined as base64, not linked by path.** The
+PNG export rasterises an SVG built from a `data:` URI, which cannot fetch
+external files, the same reason fonts are inlined in `js/export.js`. The
+T2FIT logo in `css/board.css` is a base64 `data:image/webp` behind
+`.b-logo`, not an `<img src>`. A plain path would show on screen and export
+blank.
+
+**Escape only exits full screen once, from the browser's point of view.**
+Pressing Escape while genuinely full screen is consumed by the browser to
+leave full screen; the keydown never reaches the page. `js/app.js` listens
+for `fullscreenchange` as well as `Escape`, so however full screen ends
+(button, Escape, F11, the browser's own control) the editor comes back. If a
+future change removes that listener, "Show on screen" traps the coach again.
 
 ## Storage today
 
