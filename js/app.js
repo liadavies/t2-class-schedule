@@ -430,6 +430,14 @@ $("btnReset").onclick = () => {
   drawSettings(); drawEditor(); refreshWeather();
 };
 
+/* Always opens rather than toggles, so a coach who cannot see the panel never
+   presses this and watches nothing happen. */
+$("btnSettings").onclick = () => {
+  const s = $("settings");
+  s.open = true;
+  s.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 /* Full screen output.
 
    display-mode and the browser's own full screen state have to move

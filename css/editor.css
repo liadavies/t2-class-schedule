@@ -22,7 +22,11 @@ body.tv-idle .tv-exit{opacity:0;pointer-events:none}
 #editor{max-width:1180px;margin:0 auto;padding:0 16px 120px}
 
 .bar{position:sticky;top:0;z-index:20;background:#16232E;color:#fff;margin:0 -16px 20px;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.bar h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;letter-spacing:1px;color:var(--cyan);margin-right:auto}
+.bar h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;letter-spacing:1px;color:var(--cyan)}
+/* Settings sits with the title, not with the output buttons: setting the gym
+   up is a different job from producing today's images. The auto margin lives
+   here so everything after it is pushed to the right of the bar. */
+#btnSettings{margin-right:auto}
 .btn{appearance:none;border:0;border-radius:8px;padding:12px 18px;font-family:'Barlow',sans-serif;font-weight:600;font-size:16px;cursor:pointer;background:#2C3E4C;color:#fff}
 .btn:hover{background:#3A4F60}
 .btn.primary{background:var(--cyan);color:var(--ink)}
@@ -33,6 +37,9 @@ body.tv-idle .tv-exit{opacity:0;pointer-events:none}
 .btn.tiny:hover{background:#CFDCE4}
 .btn.ghost{background:transparent;color:#8A6A6A;padding:10px 14px}
 .btn.ghost:hover{background:#FBECEC;color:#A33}
+/* Quiet enough on the dark bar not to compete with the cyan primary. */
+.btn.quiet{background:transparent;color:#CFE0EA;box-shadow:inset 0 0 0 2px rgba(255,255,255,.24)}
+.btn.quiet:hover{background:rgba(255,255,255,.1);color:#fff}
 
 .card{background:#fff;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(20,35,50,.12)}
 .card h2{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:1px;text-transform:uppercase;color:#5A6C7A;margin-bottom:14px}
@@ -83,10 +90,24 @@ textarea{resize:vertical;min-height:150px;line-height:1.55;font-weight:500}
   .preview-wrap{position:static}
 }
 .note{font-size:15px;color:#5A6C7A;line-height:1.5;margin-top:10px}
-details.card > summary{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:1px;text-transform:uppercase;color:#5A6C7A;cursor:pointer;list-style:none}
+/* Settings has to look like something you open. Given the same typography as
+   a card heading it reads as a fourth section title and nobody finds it, so
+   the summary gets a tinted bar, a subtitle saying what is inside, and a
+   chevron. The card's own padding moves to .setbody so the bar can run the
+   full width. */
+details.card{padding:0;overflow:hidden}
+#settings{scroll-margin-top:90px}      /* clears the sticky bar, which is 71px */
+details.card > summary{display:flex;align-items:center;gap:14px;padding:18px 20px;background:#F5F8FA;cursor:pointer;list-style:none}
 details.card > summary::-webkit-details-marker{display:none}
-details.card > summary::before{content:"▸ ";color:#9FB3C0}
-details.card[open] > summary::before{content:"▾ "}
-details.card .setbody{margin-top:16px}
+details.card > summary:hover{background:#EDF3F7}
+details.card > summary:focus-visible{outline:3px solid #FFC46B;outline-offset:-3px}
+details.card > summary::after{content:"";margin-left:auto;flex:0 0 auto;width:10px;height:10px;
+  border-right:3px solid #8DA1B0;border-bottom:3px solid #8DA1B0;
+  transform:translateY(-3px) rotate(45deg);transition:transform .2s}
+details.card[open] > summary::after{transform:translateY(2px) rotate(-135deg)}
+.sum-text{display:flex;flex-direction:column;gap:3px}
+.sum-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:1px;text-transform:uppercase;color:#5A6C7A}
+.sum-sub{font-size:15px;font-weight:500;color:#6B7C89;line-height:1.4}
+details.card .setbody{padding:20px}
 details.card .setbody label.fld{margin-top:16px}
 details.card .setbody > label.fld:first-child{margin-top:0}

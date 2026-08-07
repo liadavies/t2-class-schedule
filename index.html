@@ -22,6 +22,7 @@
 <div id="editor">
   <div class="bar">
     <h1>T2FIT SCHEDULE</h1>
+    <button class="btn quiet" id="btnSettings" type="button" aria-controls="settings">Settings</button>
     <input type="file" id="fileInput" accept="application/json" hidden>
     <button class="btn" id="btnOpen">Open a file</button>
     <button class="btn" id="btnSave">Save a copy</button>
@@ -58,7 +59,12 @@
       </div>
 
       <details class="card" id="settings">
-        <summary>Settings</summary>
+        <summary>
+          <span class="sum-text">
+            <span class="sum-title">Settings</span>
+            <span class="sum-sub">Gym name, coaches, weather and image size</span>
+          </span>
+        </summary>
         <div class="setbody">
           <label class="fld" for="coaches">Coaches</label>
           <textarea id="coaches" style="min-height:110px" placeholder="BEN&#10;JT&#10;GEM&#10;SAM"></textarea>
